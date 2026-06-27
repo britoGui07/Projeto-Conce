@@ -8,8 +8,9 @@ export function novoRegistroEstoque(data: estoqueData){
     const emEstoque = estoqueRepository.buscarPorIdCarro(data.id_carro)
     if(emEstoque) throw new Error("Carro já registrado em estoque! Para atualizar a quantidade, utilize a função de atualização de estoque.")
     if(data.quantidade < 0) throw new Error("Quantidade deve ser um valor inteiro positivo!(Incluindo o zero)")
-    if(data.data_entrada > new Date()) throw new Error("Data de entrada não pode ser no futuro!")
-    
+    const dataEntrada = new Date(data.data_entrada)
+    if(isNaN(dataEntrada.getTime())) throw new Error("Data de entrada inválida!")
+    if(dataEntrada > new Date()) throw new Error("Data de entrada não pode ser no futuro!")
     return estoqueRepository.novoRegistroEstoque(data)
 }
 

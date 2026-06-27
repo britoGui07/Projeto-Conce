@@ -1,5 +1,5 @@
 import {Request, Response} from "express"
-import *as vendedorService from "../services/vendedorService"
+import * as vendedorService from "../services/vendedorService"
 
 export function criarVendedor(req: Request, res:Response){
     try{
@@ -8,7 +8,7 @@ export function criarVendedor(req: Request, res:Response){
         res.status(201).json(vendedor)
     }catch(e:unknown){
         const msg = (e as Error).message
-        if(msg.includes("já cadastrado")) return res.status(409).json({status:"error", message:msg})
+        if(msg.includes("já cadastrada")) return res.status(409).json({status:"error", message:msg})
         res.status(400).json({status:"error", message:msg})
     }
 }

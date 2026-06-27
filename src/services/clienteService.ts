@@ -9,8 +9,9 @@ export function cadastrarNovoCliente (data: clienteData){
 
     const cpfExistente = clienteRepository.filtrarPorCPF(data.cpf)
     if(cpfExistente) throw new Error ("Já existe cliente cadastrado com esse CPF!")
-        return clienteRepository.cadastrarNovoCliente(data)
-    }
+    
+    return clienteRepository.cadastrarNovoCliente(data)
+}
 
 export function atualizarCliente(id:number, data: clienteData){
     const cliente = clienteRepository.filtrarPorID(id)

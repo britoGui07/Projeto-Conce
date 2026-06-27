@@ -8,8 +8,9 @@ export function criarCliente(req: Request, res:Response){
         res.status(201).json(cliente)
     }catch (e:unknown){
         const msg = (e as Error).message
-        if (msg.includes("já cadastrado")) return res.status(409).json ({status: "error", message: msg})
-            res.status(400).json({status: "error", message: msg})
+        if (msg.includes("Já existe")) 
+            return res.status(409).json ({status: "error", message: msg})
+        res.status(400).json({status: "error", message: msg})
     }
 }
 
