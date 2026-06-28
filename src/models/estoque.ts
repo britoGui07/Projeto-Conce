@@ -1,23 +1,9 @@
-export interface estoqueData{
-    id_carro: number
-    quantidade: number
-    localizacao_patio: string
-    data_entrada: Date
-}
-
 export class Estoque{
-    id_estoque: number
-
     constructor(
+        public id_estoque: number | null,
         public id_carro: number,
         public quantidade: number,
         public localizacao_patio: string,
-        public data_entrada: Date
-    ){
-        this.id_estoque = this.geraID()
-    }
-
-    private geraID(): number{
-        return Date.now()
-    }
+        public data_entrada: string
+    ){}
 }
