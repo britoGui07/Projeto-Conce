@@ -1,43 +1,69 @@
-import {Carro, carroData} from "../models/carro"
+import {executarComandoSQL} from "../database/mysql"
+import {Carro} from "../models/carro"
 
-let carros: Carro[] = []
+export class CarroRepository{
+    private static instance: CarroRepository
 
-export function cadastrarNovoCarro(data: carroData): Carro{
-    const novoCarro = new Carro(data.marca, data.modelo, data.ano, data.placa, data.preco, data.cor)
-    carros.push(novoCarro)
-    return novoCarro
-}
+    private constructor() {}
 
-export function mostrarTodos(): Carro[]{
-    return carros
-}
+    static getInstance(): CarroRepository{
+        if(!this.instance){
+            this.instance = new CarroRepository
+        }
+        return this.instance
+    }
 
-export function buscarPorID(id: number): Carro | undefined{
-    return carros.find(c => c.id_carro === id)
-}
-
-export function buscarPelaPlaca(placa: string): Carro | undefined{
-    return carros.find(c => c.placa === placa)
-}
-
-export function atualizarCarro(id: number, data: carroData): Carro | undefined{
-    const carro = carros.find(c => c.id_carro === id)
-    if(!carro) return undefined
-
-    if(data.marca) carro.marca = data.marca
-    if(data.modelo) carro.modelo = data.modelo
-    if(data.ano) carro.ano = data.ano
-    if(data.placa) carro.placa = data.placa
-    if(data.preco) carro.preco = data.preco
-    if(data.cor) carro.cor = data.cor
+    static getCreateTableQuery(): string{
+        return `
+            CREATE TABLE IF NOT EXISTS Carro (
+                id_carro INT AUTO_INCREMENT PRIMARY KEY,
+                marca VARCHAR(100) NOT NULL,
+                modelo VARCHAR(100) NOT NULL,
+                ano INT NOT NULL,
+                placa VARCHAR(20) NOT NULL UNIQUE,
+                preco DECIMAL(10,2) NOT NULL,
+                cor VARCHAR(50) NOT NULL
+            );
+        `
+    }
     
-    return carro
-}
+    async inserirCarro(carro: Carro): Promise<Carro>{
+        const resultado = await executarComandoSQL(
+            'INSERT INTO Carro (marca, modelo, ano, placa, preco, cor) VALUES (?, ?, ?, ?, ?, ?)',
+            [carro.marca, carro.modelo, carro.ano, carro.placa, carro.preco, carro.cor]
+        )
+        return new Carro(resultado.insertId, carro.marca, carro.modelo, carro.ano, carro.placa, carro.preco, carro.cor)
+    }
 
-export function removerCarro(id: number): boolean{
-    const pos = carros.findIndex(c => c.id_carro === id)
-    if(pos === -1) return false
+    async mostrarTodos(): Promise<Carro[]>{
+        const linhas = await executarComandoSQL('SELECT * FROM Carro', [])
+        return linhas.map((l: any) => new Carro(l.id_carro, l.marca, l.modelo, l.ano, l.placa, Number(l.preco), l.cor))
+    }
 
-    carros.splice(pos, 1)
-    return true
+    async buscarPorId(id: number): Promise<Carro | null>{
+        const linhas = await executarComandoSQL('SELECT * FROM Carro WHERE id_carro = ?', [id])
+        if(linhas.length === 0) return null
+        const l = linhas[0]
+        return new Carro(l.id_carro, l.marca, l.modelo, l.ano, l.placa, Number(l.preco), l.cor)
+    }
+
+    async buscarPelaPlaca(placa: string): Promise<Carro | null>{
+        const linhas = await executarComandoSQL('SELECT * FROM Carro WHERE placa = ?', [placa])
+        if (linhas.length === 0) return null
+        const l = linhas[0]
+        return new Carro(l.id_carro, l.marca, l.modelo, l.ano, l.placa, Number(l.preco), l.cor)
+    }
+
+    async atualizarCarro(id: number, carro: Carro): Promise<Carro | null>{
+        await executarComandoSQL(
+            'UPDATE Carro SET marca = ?, modelo = ?, ano = ?, placa = ?, preco = ?, cor = ? WHERE id_carro = ?', 
+            [carro.marca, carro.modelo, carro.ano, carro.placa, carro.preco, carro.cor, id]
+        )
+        return this.buscarPorId(id)
+    }
+
+    async removerCarro(id: number): Promise<boolean>{
+        const resultado = await executarComandoSQL('DELETE FROM Carro WHERE id_carro = ?', [id])
+        return resultado.affectedRows > 0
+    }
 }
