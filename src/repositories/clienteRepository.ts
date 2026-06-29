@@ -1,46 +1,80 @@
-import {Cliente, clienteData } from "../models/cliente"
+import {executarComandoSQL} from "../database/mysql";
+import {Cliente } from "../models/cliente"
 
-let clientes: Cliente [] = []
+export class ClienteRepository{
+    private static instance: ClienteRepository
+    
+    private constructor(){}
 
-export function cadastrarNovoCliente(data: clienteData): Cliente{
-    const novoCliente = new Cliente(data.nome, data.cpf, data.telefone, data.email, data.cidade)
-    clientes.push(novoCliente)
-    return novoCliente
-}
+    static getInstance(): ClienteRepository{
+        if (!this.instance){
+            this.instance = new ClienteRepository
+        }
+        return this.instance
+    }
 
-export function filtrarPorID(id: number): Cliente | undefined{
-    return clientes.find(cl => cl.id_cliente === id)
-}
+    static getCreateTableQuery(): string{
+        return `
+        CREATE TABLE IF NOT EXISTS Cliente(
+            id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+            nome VARCHAR(100) NOT NULL,
+            cpf VARCHAR(14) NOT NULL UNIQUE,
+            telefone VARCHAR(20) NOT NULL,
+            email VARCHAR(100),
+            cidade VARCHAR(100)
+            );
+        `
+    }
 
-export function filtrarPorNome(nome:string): Cliente | undefined{
-    return clientes.find(cl=> cl.nome === nome)
-}
+    async inserirCliente(cliente: Cliente): Promise<Cliente> {
+        const resultado = await executarComandoSQL(
+            'INSERT INTO Cliente (nome, cpf, telefone, email, cidade) VALUES (?, ?, ?, ?, ?)',
+            [cliente.nome, cliente.cpf, cliente.telefone, cliente.email ?? null, cliente.cidade ?? null]
+        )
+        return new Cliente(resultado.insertId, cliente.nome, cliente.cpf, cliente.telefone, cliente.email, cliente.cidade)
+    }
+    
+    async mostrarTodos(): Promise<Cliente[]> {
+        const linhas = await executarComandoSQL('SELECT * FROM Cliente', [])
+        return linhas.map((l: any) => new Cliente(l.id_cliente, l.nome, l.cpf, l.telefone, l.email, l.cidade))
+    }
+    
+    async buscarPorId(id: number): Promise<Cliente | null> {
+        const linhas = await executarComandoSQL('SELECT * FROM Cliente WHERE id_cliente = ?', [id])
+        if (linhas.length ===0) return null
+        const l = linhas [0]
+        return new Cliente(l.id_cliente, l.nome, l.cpf, l.telefone, l.email, l.cidade)
+    }
+    async buscarPorCPF(cpf: string): Promise<Cliente | null>{
+        const linhas = await executarComandoSQL('SELECT * FROM Cliente WHERE cpf = ?', [cpf])
+        if (linhas.length === 0) return null
+        const l = linhas[0]
+        return new Cliente(l.id_cliente, l.nome, l.cpf, l.telefone, l.email, l.cidade)
+    }
 
-export function filtrarPorCPF(cpf:string): Cliente | undefined{
-    return clientes.find(cl=> cl.cpf === cpf)
-}
+    async atualizarCliente(id: number, cliente: Cliente): Promise<Cliente | null> {
+        await executarComandoSQL(
+            'UPDATE Cliente SET nome= ?, cpf=?, telefone= ?, email= ?, cidade= ? WHERE id_cliente = ?',
+            [cliente.nome, cliente.cpf, cliente.telefone, cliente.email ?? null, cliente.cidade ?? null, id]
+        )
+        return this.buscarPorId(id)
+    }
 
-export function atualizarCliente(id:number, data: clienteData): Cliente| undefined{
-    const cliente = clientes.find( cl=> cl.id_cliente === id)
-    if(!cliente) return undefined
+    async removerCliente(id: number): Promise<boolean> {
+        const resultado = await executarComandoSQL('DELETE FROM Cliente WHERE id_cliente =?', [id])
+        return resultado.affectedRows > 0
+    }
 
-    if(data.nome) cliente.nome = data.nome
-    if(data.cpf) cliente.cpf = data.cpf
-    if(data.telefone) cliente.telefone = data.telefone
-    if(data.email) cliente.email = data.email
-    if(data.cidade) cliente.cidade = data.cidade
+    async listarNotasPorCliente(id_cliente: number): Promise<any[]> {
+        const linhas = await executarComandoSQL(
+            'SELECT * FROM NotaFiscal WHERE id_cliente = ?',
+            [id_cliente]
+        )
+        return linhas
+    }
 
-    return cliente
-}
-
-export function removerCliente(id:number): boolean{
-    const pos = clientes.findIndex(cl=> cl.id_cliente === id)
-    if(pos === -1) return false
-
-    clientes.splice(pos, 1)
-    return true
-}
-
-export function mostrarTodos(): Cliente[]{
-    return clientes
+    async clientePossuiNotas(id_cliente: number): Promise<boolean>{
+        const notas = await this.listarNotasPorCliente(id_cliente)
+        return notas.length > 0
+    }
 }
