@@ -1,5 +1,5 @@
 import {Cliente} from "../models/cliente"
-import {ClienteRepository} from "../repository/clienteRepository"
+import {ClienteRepository} from "../repositories/clienteRepository"
 
 export class ClienteService{
     private repository: ClienteRepository
@@ -54,34 +54,35 @@ export class ClienteService{
         dados.cpf ?? clienteExistente.cpf,
         dados.telefone ?? clienteExistente.telefone,
         dados.email ?? clienteExistente.email,
-        dados.cidade ?? clienteExistente.cidade
-    )
-
-    const resultado = await this.repository.atualizarCliente(id, clienteAtualizado)
-    return { status: 200, body: resultado}
-}
-
-async removerCliente(id:number): Promise<{status: number, body: any}> {
-    const cliente = await this.repository.buscarPorId(id)
-    if(!cliente){
-        return { status: 404, body: {erro: "Cliente não encontrado"}}
+        dados.cidade ?? clienteExistente.cidade)
+        
+        const resultado = await this.repository.atualizarCliente(id, clienteAtualizado)
+        return { status: 200, body: resultado}
     }
+    
+    async removerCliente(id:number): Promise<{status: number, body: any}> {
+        const cliente = await this.repository.buscarPorId(id)
+        if(!cliente){
+            return { status: 404, body: {erro: "Cliente não encontrado"}}
+    }
+    
     const possuiNotas = await this.repository.clientePossuiNotas(id)
     if(possuiNotas) {
         return { status: 422, body: {erro: "Cliente possui notas fiscais vinculadas e não pode ser removido"}}
     }
-
-    await this.repository.removerCliente(id)
-    return { status: 200, body: cliente}
-}
-
-async listarNotasPorCliente(id: number): Promise<{status: number, body: any}> {
-    const cliente = await this.repository.buscarPorId(id)
-    if (!cliente){
-        return {status: 404, body: { erro: "Cliente não encontrado"}}
+    
+  await this.repository.removerCliente(id)
+        return { status: 200, body: cliente }
     }
 
-    const notas = await this.repository.listarNotasPorCliente(id)
-    return { status: 200, body: notas}
-}
+    async listarNotasDoCliente(id: number): Promise<{ status: number, body: any }>{
+        // verifica se cliente existe
+        const cliente = await this.repository.buscarPorId(id)
+        if (!cliente) {
+            return { status: 404, body: { erro: "Cliente não encontrado"}}
+        }
+
+        const notas = await this.repository.listarNotasPorCliente(id)
+        return { status: 200, body: notas }
+    }
 }
