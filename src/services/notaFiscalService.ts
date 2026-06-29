@@ -1,54 +1,67 @@
-import * as notaFiscalRepository from "../repositories/notaFiscalRepository"
-import * as clienteRepository from "../repositories/clienteRepository"
-import * as vendedorRepository from "../repositories/vendedorRepository"
-import * as carroRepository from "../repositories/carroRepository"
-import * as estoqueRepository from "../repositories/estoqueRepository"
-import { NotaFiscalData } from "../models/notaFiscal"
+import {NotaFiscalRepository} from "../repositories/notaFiscalRepository"
+import {ClienteRepository} from "../repositories/clienteRepository"
+import {VendedorRepository} from "../repositories/vendedorRepository"
+import {CarroRepository} from "../repositories/carroRepository"
+import {EstoqueRepository} from "../repositories/estoqueRepository"
+import {NotaFiscal} from "../models/notaFiscal"
 
-export function emitirNota(data: NotaFiscalData){
-    const carro = carroRepository.buscarPorID(data.id_carro)
-    if(!carro) throw new Error("Carro não encontrado!")
-    const cliente = clienteRepository.filtrarPorID(data.id_cliente)
-    if(!cliente) throw new Error("Cliente não encontrado!")
-    const vendedor = vendedorRepository.buscarPorID(data.id_vendedor)
-    if(!vendedor) throw new Error("Vendedor não encontrado!")
+export class NotaFiscalService{
+    private notaFiscalRepository = NotaFiscalRepository.getInstance()
+    private clienteRepository = ClienteRepository.getInstance()
+    private vendedorRepository = VendedorRepository.getInstance()
+    private carroRepository = CarroRepository.getInstance()
+    private estoqueRepository = EstoqueRepository.getInstance()
 
-    const num_nota = notaFiscalRepository.buscarPeloNumero(data.numero_nota)
-    if(num_nota) throw new Error("Esse número já está associado a uma nota!")
+    async emitirNota(data: any): Promise<NotaFiscal>{
+        if(!data.numero_nota || !data.data_emissao || !data.valor_total || !data.id_cliente || !data.id_vendedor || !data.id_carro) throw new Error("Campos obrigatórios ausentes!")
 
-    const emEstoque = estoqueRepository.buscarPorIdCarro(data.id_carro)
-    if(!emEstoque) throw new Error("Carro não possui registro em estoque!")
-    if(emEstoque.quantidade <= 0) throw new Error("Estoque de carro não disponível!")
-    emEstoque.quantidade -= 1
-    
-    const data_emissao = new Date(data.data_emissao)
-    if(data_emissao > new Date()) throw new Error("Data de emissão não pode ser no futuro!")
+        const cliente = await this.clienteRepository.buscarPorId(data.id_cliente)
+        if(!cliente) throw new Error("Cliente não encontrado!")
 
-    if(data.valor_total <= 0) throw new Error("Valor total da nota fiscal deve ser positivo e maior que zero!")
+        const vendedor = await this.vendedorRepository.buscarPorId(data.id_vendedor)
+        if(!vendedor) throw new Error("Vendedor não encontrado!")
 
-    estoqueRepository.atualizarEstoque(emEstoque.id_estoque, {quantidade: emEstoque.quantidade})
+        const carro = await this.carroRepository.buscarPorId(data.id_carro)
+        if(!carro) throw new Error("Carro não encontrado!")
 
-    return notaFiscalRepository.novaNota(data)
-}
+        const notaExistente = await this.notaFiscalRepository.buscarPeloNumero(data.numero_nota)
+        if(notaExistente) throw new Error("Número de nota já cadastrado!")
 
-export function mostrarTodos(){
-    return notaFiscalRepository.mostrarTodos()
-}
+        const emEstoque = await this.estoqueRepository.buscarPorIdCarro(data.id_carro)
+        if(!emEstoque) throw new Error("Carro não possui registro em estoque!")
+        if(emEstoque.quantidade <= 0) throw new Error("Estoque do carro não disponível!")
 
-export function buscarPorID(id: number){
-    const nota = notaFiscalRepository.buscarPorID(id)
-    if(!nota) throw new Error("Nota fiscal não encontrada!")
-    return nota
-}
+        const dataEmissao = new Date(data.data_emissao)
+        if(isNaN(dataEmissao.getTime())) throw new Error("Data de emissão inválida!")
+        if(dataEmissao > new Date()) throw new Error("Data de emissão não pode ser no futuro!")
 
-export function buscarPorIdCliente(id: number){
-    const cliente = clienteRepository.filtrarPorID(id)
-    if(!cliente) throw new Error("Cliente não encontrado!")
-    return notaFiscalRepository.buscarPorIdCliente(id)
-}
+        if(data.valor_total <= 0) throw new Error("Valor total deve ser maior que zero!")
 
-export function buscarPorIdVendedor(id: number){
-    const vendedor = vendedorRepository.buscarPorID(id)
-    if(!vendedor) throw new Error("Vendedor não encontrado!")
-    return notaFiscalRepository.buscarPorIdVendedor(id)
+        await this.estoqueRepository.atualizarEstoque(emEstoque.id_estoque!, emEstoque.quantidade - 1, emEstoque.localizacao_patio)
+
+        const novaNota = new NotaFiscal(null, data.numero_nota, data.data_emissao, data.valor_total, data.id_cliente, data.id_vendedor, data.id_carro)
+        return this.notaFiscalRepository.inserirNota(novaNota)
+    }
+
+    async mostrarTodos(): Promise<NotaFiscal[]>{
+        return this.notaFiscalRepository.mostrarTodos()
+    }
+
+    async buscarPorId(id: number): Promise<NotaFiscal>{
+        const nota = await this.notaFiscalRepository.buscarPorId(id)
+        if(!nota) throw new Error("Nota fiscal não encontrada!")
+        return nota
+    }
+
+    async buscarPorIdCliente(id: number): Promise<NotaFiscal[]>{
+        const cliente = await this.clienteRepository.buscarPorId(id)
+        if(!cliente) throw new Error("Cliente não encontrado!")
+        return this.notaFiscalRepository.buscarPorIdCliente(id)
+    }
+
+    async buscarPorIdVendedor(id: number): Promise<NotaFiscal[]>{
+        const vendedor = await this.vendedorRepository.buscarPorId(id)
+        if(!vendedor) throw new Error("Vendedor não encontrado!")
+        return this.notaFiscalRepository.buscarPorIdVendedor(id)
+    }
 }
