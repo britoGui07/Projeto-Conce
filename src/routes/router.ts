@@ -3,7 +3,7 @@ import {CarroController} from '../controllers/carroController'
 import {EstoqueController} from '../controllers/estoqueController'
 // import {ClienteController} from '../controllers/clienteController'
 // import {VendedorController} from '../controllers/vendedorController'
-// import {NotaFiscalController} from '../controllers/notaFiscalController'
+import {NotaFiscalController} from '../controllers/notaFiscalController'
 
 const router = Router()
 
@@ -11,7 +11,7 @@ const carroController = new CarroController()
 const estoqueController = new EstoqueController()
 // const clienteController = new ClienteController()
 // const vendedorController = new VendedorController()
-// const notaFiscalController = new NotaFiscalController()
+const notaFiscalController = new NotaFiscalController()
 
 router.get('/carros/disponiveis', (req: Request, res: Response) => {carroController.listarDisponiveis(req, res)})
 router.get('/carros/:id', (req: Request, res: Response) => {carroController.buscarPorId(req, res)})
@@ -26,5 +26,9 @@ router.get('/estoque', (req: Request, res: Response) => {estoqueController.lista
 router.post('/estoque', (req: Request, res: Response) => {estoqueController.criarEstoque(req, res)})
 router.put('/estoque/:id', (req: Request, res: Response) => {estoqueController.atualizarEstoque(req, res)})
 router.delete('/estoque/:id', (req: Request, res: Response) => {estoqueController.removerEstoque(req, res)})
+
+router.get('/notas/:id', (req: Request, res: Response) => {notaFiscalController.buscarPorId(req, res)})
+router.get('/notas', (req: Request, res: Response) => {notaFiscalController.listarTodos(req, res)})
+router.post('/notas', (req: Request, res: Response) => {notaFiscalController.emitirNota(req, res)})
 
 export default router
