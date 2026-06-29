@@ -1,72 +1,38 @@
 import {Request, Response} from "express"
-import * as vendedorService from "../services/vendedorService"
+import {VendedorService} from "../services/vendedorService"
 
-export function criarVendedor(req: Request, res:Response){
-    try{
-        let data = req.body
-        const vendedor = vendedorService.cadastrarNovoVendedor(data)
-        res.status(201).json(vendedor)
-    }catch(e:unknown){
-        const msg = (e as Error).message
-        if(msg.includes("já cadastrada")) return res.status(409).json({status:"error", message:msg})
-        res.status(400).json({status:"error", message:msg})
-    }
+const service = new VendedorService()
+
+export async function criarVendedor(req: Request, res: Response){
+    const {status, body} = await service.cadastrarVendedor(req.body)
+    res.status(status).json(body)
 }
 
-export function atualizarVendedor(req: Request, res: Response){
-    try{
-        let id = Number(req.params.id)
-        let data = req.body
-        const vendedor = vendedorService.atualizarVendedor(id, data)
-        res.status(200).json(vendedor)
-    }catch(e:unknown){
-        const msg = (e as Error).message
-        if(msg.includes("não encontrado")) return res.status(404).json({status:"error", message: msg})
-        if(msg.includes("já cadastrado")) return res.status(409).json({status:"error", message: msg})
-        res.status(400).json({status:"error", message:msg})
-    }
+export async function listarTodosVendedores(req: Request, res: Response){
+    const {status, body} = await service.listarVendedores()
+    res.status(status).json(body)
 }
 
-export function listarTodosVendedores(req:Request, res:Response){
-    try{
-        const vendedores = vendedorService.mostrarTodos()
-        res.status(200).json(vendedores)
-    }catch(e:unknown){
-        res.status(500).json({status:"error", message: (e as Error).message})
-    }
+export async function buscarVendedor(req: Request, res: Response){
+    const id = Number(req.params.id)
+    const {status, body} = await service.buscarVendedorPorId(id)
+    res.status(status).json(body)
 }
 
-export function buscarVendedor(req: Request, res:Response){
-    try{
-        let id = Number(req.params.id)
-        const vendedor = vendedorService.buscarPorID(id)
-        res.status(200).json(vendedor)
-    }catch(e:unknown){
-        res.status(404).json({status: "error", message: (e as Error).message})
-    }
+export async function atualizarVendedor(req: Request, res: Response){
+    const id = Number(req.params.id)
+    const {status, body} = await service.atualizarVendedor(id, req.body)
+    res.status(status).json(body)
 }
 
-export function listarNotasDoVendedor(req:Request, res:Response){
-    try{
-        let id = Number(req.params.id)
-        const notas = vendedorService.listarNotasDoVendedor(id)
-        res.status(200).json(notas)
-    }catch(e:unknown){
-        const msg = (e as Error).message
-        if(msg.includes("não encontrado")) return res.status(404).json({status:"error", message:msg})
-        res.status(400).json({status:"error", message: msg})
-    }
+export async function removerVendedor(req: Request, res: Response){
+    const id = Number(req.params.id)
+    const {status, body} = await service.removerVendedor(id)
+    res.status(status).json(body)
 }
 
-export function removerVendedor(req:Request, res:Response){
-    try{
-        let id = Number(req.params.id)
-        vendedorService.removerVendedor(id)
-        res.status(200).json({message: "Vendedor removido com sucesso!"})
-    }catch(e:unknown){
-        const msg = (e as Error).message
-        if(msg.includes("não encontrado")) return res.status(404).json({status:"error", message:msg})
-        if(msg.includes("nota fiscal vinculada")) return res.status(422).json({status:"error", message:msg})
-        res.status(400).json({status:"error",message:msg})
-    }
+export async function listarNotasDoVendedor(req: Request, res: Response){
+    const id = Number(req.params.id)
+    const {status, body} = await service.listarNotasPorVendedor(id)
+    res.status(status).json(body)
 }
