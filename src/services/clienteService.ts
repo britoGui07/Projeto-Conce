@@ -75,8 +75,7 @@ export class ClienteService{
         return { status: 200, body: cliente }
     }
 
-    async listarNotasDoCliente(id: number): Promise<{ status: number, body: any }>{
-        // verifica se cliente existe
+    async listarNotasPorCliente(id: number): Promise<{ status: number, body: any }>{
         const cliente = await this.repository.buscarPorId(id)
         if (!cliente) {
             return { status: 404, body: { erro: "Cliente não encontrado"}}
