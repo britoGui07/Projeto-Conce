@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "2a7802dc-b09e-4a44-a98a-710cac4c0e17",
-    "name": "Projeto-I",
+    "name": "Projeto-II",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "54272976",
     "_collection_link": "https://go.postman.co/collection/54272976-2a7802dc-b09e-4a44-a98a-710cac4c0e17?source=collection_link"
@@ -35,7 +35,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/clientes/notas/1780412778599",
+              "raw": "http://localhost:3000/clientes/notas/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -44,7 +44,7 @@
               "path": [
                 "clientes",
                 "notas",
-                "1780412778599"
+                "1"
               ]
             }
           },
@@ -56,7 +56,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/clientes/1780412778599",
+              "raw": "http://localhost:3000/clientes/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -64,7 +64,7 @@
               "port": "3000",
               "path": [
                 "clientes",
-                "1780412778599"
+                "1"
               ]
             }
           },
@@ -113,7 +113,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3000/clientes/1780412778599",
+              "raw": "http://localhost:3000/clientes/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -121,7 +121,7 @@
               "port": "3000",
               "path": [
                 "clientes",
-                "1780412778599"
+                "1"
               ]
             }
           },
@@ -133,7 +133,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/clientes/1780412778599",
+              "raw": "http://localhost:3000/clientes/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -141,7 +141,7 @@
               "port": "3000",
               "path": [
                 "clientes",
-                "1780412778599"
+                "1"
               ]
             }
           },
@@ -177,7 +177,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/vendedores/notas/1780412739007",
+              "raw": "http://localhost:3000/vendedores/notas/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -186,7 +186,7 @@
               "path": [
                 "vendedores",
                 "notas",
-                "1780412739007"
+                "1"
               ]
             }
           },
@@ -198,7 +198,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/vendedores/1780412739007",
+              "raw": "http://localhost:3000/vendedores/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -206,7 +206,7 @@
               "port": "3000",
               "path": [
                 "vendedores",
-                "1780412739007"
+                "1"
               ]
             }
           },
@@ -255,7 +255,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3000/vendedores/1780412739007",
+              "raw": "http://localhost:3000/vendedores/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -263,7 +263,7 @@
               "port": "3000",
               "path": [
                 "vendedores",
-                "1780412739007"
+                "1"
               ]
             }
           },
@@ -275,7 +275,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/vendedores/1780412739007",
+              "raw": "http://localhost:3000/vendedores/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -283,7 +283,7 @@
               "port": "3000",
               "path": [
                 "vendedores",
-                "1780412739007"
+                "1"
               ]
             }
           },
@@ -339,7 +339,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/carros/1780412733056",
+              "raw": "http://localhost:3000/carros/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -347,7 +347,7 @@
               "port": "3000",
               "path": [
                 "carros",
-                "1780412733056"
+                "1"
               ]
             }
           },
@@ -396,7 +396,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3000/carros/1780412733056",
+              "raw": "http://localhost:3000/carros/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -404,7 +404,7 @@
               "port": "3000",
               "path": [
                 "carros",
-                "1780412733056"
+                "1"
               ]
             }
           },
@@ -416,7 +416,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/carros/1780412733056",
+              "raw": "http://localhost:3000/carros/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -424,7 +424,7 @@
               "port": "3000",
               "path": [
                 "carros",
-                "1780412733056"
+                "1"
               ]
             }
           },
@@ -460,7 +460,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/estoque/carro/1780412733056",
+              "raw": "http://localhost:3000/estoque/carro/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -469,7 +469,7 @@
               "path": [
                 "estoque",
                 "carro",
-                "1780412733056"
+                "1"
               ]
             }
           },
@@ -481,7 +481,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/estoque/1780412759161",
+              "raw": "http://localhost:3000/estoque/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -489,7 +489,7 @@
               "port": "3000",
               "path": [
                 "estoque",
-                "1780412759161"
+                "1"
               ]
             }
           },
@@ -502,7 +502,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"id_carro\": 1780412733056,\r\n    \"quantidade\": 5,\r\n    \"localizacao_patio\": \"Galpão A-3\",\r\n    \"data_entrada\": \"2025-06-01\"\r\n}",
+              "raw": "{\r\n    \"id_carro\": 1,\r\n    \"quantidade\": 5,\r\n    \"localizacao_patio\": \"Galpão A-3\",\r\n    \"data_entrada\": \"2025-06-01\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -538,7 +538,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3000/estoque/1780412759161",
+              "raw": "http://localhost:3000/estoque/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -546,7 +546,7 @@
               "port": "3000",
               "path": [
                 "estoque",
-                "1780412759161"
+                "1"
               ]
             }
           },
@@ -558,7 +558,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/estoque/1780412759161",
+              "raw": "http://localhost:3000/estoque/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -566,7 +566,7 @@
               "port": "3000",
               "path": [
                 "estoque",
-                "1780412759161"
+                "1"
               ]
             }
           },
@@ -603,7 +603,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"numero_nota\": \"NF-2025-0001\",\r\n    \"data_emissao\": \"2025-06-10\",\r\n    \"valor_total\": 110000.00,\r\n    \"id_cliente\": 1780412778599,\r\n    \"id_vendedor\": 1780412739007,\r\n    \"id_carro\": 1780412733056\r\n}",
+              "raw": "{\r\n    \"numero_nota\": \"NF-2025-0001\",\r\n    \"data_emissao\": \"2025-06-10\",\r\n    \"valor_total\": 110000.00,\r\n    \"id_cliente\": 1,\r\n    \"id_vendedor\": 1,\r\n    \"id_carro\": 1\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -630,7 +630,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/notas/1780412414465",
+              "raw": "http://localhost:3000/notas/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -638,7 +638,172 @@
               "port": "3000",
               "path": [
                 "notas",
-                "1780412414465"
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Requisições de Erro",
+      "item": [
+        {
+          "name": "ClienteCPFduplicado",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Jorginho Pereira\",\r\n    \"cpf\": \"123.456.789-00\",\r\n    \"telefone\": \"(12) 99979-8000\",\r\n    \"email\": \"cabuloso@email.com\",\r\n    \"cidade\": \"São Paulo\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/clientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "VendedorMatriculaDuplicada",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Robertinha\",\r\n    \"matricula\": \"VND-001\",\r\n    \"comissao_percentual\": 5.8\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/vendedores",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "vendedores"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CarroPlacaDuplicada",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"marca\": \"Renault\",\r\n    \"modelo\": \"Kwid\",\r\n    \"ano\": 2025,\r\n    \"placa\": \"ABC-1234\",\r\n    \"preco\": 90000.00,\r\n    \"cor\": \"Branco\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/carros",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "carros"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "EstoqueCarroInexistente",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id_carro\": 7798,\r\n    \"quantidade\": 5,\r\n    \"localizacao_patio\": \"Galpão A-3\",\r\n    \"data_entrada\": \"2025-06-01\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/estoque",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "estoque"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ClienteInexistente",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/clientes/999",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "clientes",
+                "999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "NumeroNotaDuplicado",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"numero_nota\": \"NF-2025-0001\",\r\n    \"data_emissao\": \"2025-06-10\",\r\n    \"valor_total\": 110000.00,\r\n    \"id_cliente\": 1,\r\n    \"id_vendedor\": 1,\r\n    \"id_carro\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/notas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "notas"
               ]
             }
           },
